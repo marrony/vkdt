@@ -57,7 +57,7 @@ dt_graph_init(dt_graph_t *g, qvk_queue_name_t qname)
   VkCommandPoolCreateInfo cmd_pool_create_info = {
     .sType            = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO,
     .queueFamilyIndex = qvk.queue[qvk.qid[g->queue_name]].family,
-    .flags            = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT,
+    .flags            = 0, //VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT,
   };
   QVK(vkCreateCommandPool(qvk.device, &cmd_pool_create_info, NULL, &g->command_pool));
 
@@ -367,6 +367,8 @@ VkResult dt_graph_run(
       dt_log(s_log_pipe|s_log_err, "no nodes created!");
       return VK_INCOMPLETE;
     }
+
+    QVKR(vkResetCommandPool(qvk.device, graph->command_pool, 0));
 
     // potentially free/re-allocate memory, create buffers, images, image_views, and descriptor sets:
     int dynamic_array = 0;

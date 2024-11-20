@@ -138,7 +138,7 @@ dt_gui_win_init_vk(dt_gui_win_t *win)
     VkCommandPoolCreateInfo cmd_pool_create_info = {
       .sType            = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO,
       .queueFamilyIndex = qvk.queue[qvk.qid[s_queue_graphics]].family,
-      .flags            = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT,
+      .flags            = 0, //VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT,
     };
     QVKR(vkCreateCommandPool(qvk.device, &cmd_pool_create_info, NULL, win->command_pool+i));
 
@@ -158,7 +158,7 @@ dt_gui_win_init_vk(dt_gui_win_t *win)
   };
   VkDescriptorPoolCreateInfo pool_info = {
     .sType         = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO,
-    .flags         = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT,
+    .flags         = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT | VK_DESCRIPTOR_POOL_CREATE_UPDATE_AFTER_BIND_BIT,
     .maxSets       = 2,
     .poolSizeCount = LENGTH(pool_sizes),
     .pPoolSizes    = pool_sizes,
